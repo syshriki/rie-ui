@@ -22,7 +22,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm install -g parcel
     - run: npm install
     - run: npm run build
     - name: GitHub Pages Deploy
@@ -30,6 +29,6 @@ jobs:
       with:
        repo: syshriki/rie-ui-hosted
        target_branch: master
-       build_dir: ./build
+       build_dir: ./dist
   
     
