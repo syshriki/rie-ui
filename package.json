@@ -6,7 +6,7 @@
   "scripts": {
     "start": "set NODE_ENV=local& parcel .\\src\\index.html",
     "prod": "set NODE_ENV=prod& parcel .\\src\\index.html",
-    "build": "NODE_ENV=prod parcel build src/index.html --public-url https://syshriki.github.io/rie-ui-hosted",
+    "build": "NODE_ENV=prod parcel build src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
