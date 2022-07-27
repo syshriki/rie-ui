@@ -30,5 +30,6 @@ jobs:
        repo: syshriki/rie-ui-hosted
        target_branch: master
        build_dir: ./dist
+      env:
+       GH_PAT: ${{ secrets.GH_PAT }}
   
-    

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "set NODE_ENV=local& parcel .\\src\\index.html",
     "prod": "set NODE_ENV=prod& parcel .\\src\\index.html",
-    "build": "NODE_ENV=prod parcel build src/index.html",
+    "build": "NODE_ENV=prod parcel build src/index.html --public-url https://syshriki.github.io/rie-ui-hosted",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -18,11 +18,11 @@
     "postcss": "^8.4.14",
     "process": "^0.11.10",
     "standard": "^16.0.4",
-    "tailwindcss": "^3.0.24"
+    "tailwindcss": "^3.0.24",
+    "parcel": "^2.6.2"
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "parcel": "^2.6.2",
     "prop-types": "^15.8.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
