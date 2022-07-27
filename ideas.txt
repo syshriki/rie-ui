@@ -1,0 +1,1 @@
+- Recipe book, a user can havem ultiple recieps grouped together in a "book" e.g thanksgiving dinner, shabbat night, shabbat afternoon

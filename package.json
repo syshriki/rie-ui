@@ -1,0 +1,32 @@
+{
+  "name": "rie-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".\\src\\index.js",
+  "scripts": {
+    "start": "set NODE_ENV=local& parcel .\\src\\index.html",
+    "prod": "set NODE_ENV=prod& parcel .\\src\\index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/config-default": "^2.5.0",
+    "@parcel/transformer-svg-react": "^2.5.0",
+    "autoprefixer": "^10.4.7",
+    "postcss": "^8.4.14",
+    "process": "^0.11.10",
+    "standard": "^16.0.4",
+    "tailwindcss": "^3.0.24"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "prop-types": "^15.8.1",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-icons": "^4.3.1",
+    "react-query": "^3.39.0",
+    "react-router-dom": "^6.3.0",
+    "superagent": "^7.1.3"
+  }
+}
