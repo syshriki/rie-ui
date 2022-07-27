@@ -2,10 +2,11 @@
   "name": "rie-ui",
   "version": "1.0.0",
   "description": "",
-  "main": ".\\src\\index.js",
+  "source": "src/index.html",
   "scripts": {
     "start": "set NODE_ENV=local& parcel .\\src\\index.html",
     "prod": "set NODE_ENV=prod& parcel .\\src\\index.html",
+    "build": "NODE_ENV=prod parcel build src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
