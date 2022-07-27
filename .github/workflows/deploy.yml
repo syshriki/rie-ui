@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_S3_BUCKET_NAME: rie-ui
-      AWS_CF_DISTRIBUTION_ID: E3SKCE46VT161U
+      AWS_CF_DISTRIBUTION_ID: E2QU4IAE2BVQ4Y
     steps:
       - uses: actions/checkout@master
       - name: Use Node.js 14
