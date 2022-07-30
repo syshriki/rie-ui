@@ -96,7 +96,7 @@ export default function SingleRecipePage () {
             <div className='flex place-self-center'>
               <div className='flex self-center'>
                 <div className='pr-1 text-2xl font-bold'>
-                  <p>{username}'s Profile</p>
+                  <p>{username}</p>
                 </div>
               </div>
             </div>
