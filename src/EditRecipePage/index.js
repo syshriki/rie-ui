@@ -64,7 +64,7 @@ export default function EditRecipePage () {
     navigate('/huh')
   }
 
-  const error = postRecipe.error
+  const errorElement = postRecipe.error
     ? (
       <div className='px-3 py-1.5'>
         <ErrorDialog message=' There is something wrong with the server :/ try again later' />
@@ -78,7 +78,7 @@ export default function EditRecipePage () {
   return (
     <WithSideBar>
       <Loading show={isLoading}>
-        {error}
+        {errorElement}
         <div className='flex-row h-full space-y-4 overflow-auto'>
           <div className='pt-4 pb-6 text-center h-18'>
             <p className='text-2xl font-bold'>Edit Recipe</p>
@@ -86,7 +86,7 @@ export default function EditRecipePage () {
           <div className='text-center'>
             <input
               type='text'
-              disabled={!!error}
+              disabled={!!postRecipe.error}
               className={`
           px-3
           py-1.5
@@ -109,7 +109,7 @@ export default function EditRecipePage () {
           </div>
           <div className='text-center'>
             <textarea
-              disabled={!!error}
+              disabled={!!postRecipe.error}
               className={`px-3
               py-1.5
               border
@@ -130,7 +130,7 @@ export default function EditRecipePage () {
           </div>
           <div className='text-center h-3/4'>
             <textarea
-              disabled={!!error}
+              disabled={!!postRecipe.error}
               className={`px-3
               py-1.5
               border
@@ -152,8 +152,8 @@ export default function EditRecipePage () {
           </div>
           <div className='text-center'>
             <button
-              disabled={!!error}
-              onClick={onSubmit} className={error ? disabledButton : enabledButton}
+              disabled={!!postRecipe.error}
+              onClick={onSubmit} className={postRecipe.error ? disabledButton : enabledButton}
             >Save
             </button>
           </div>

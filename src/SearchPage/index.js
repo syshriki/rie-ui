@@ -170,11 +170,11 @@ export default function SearchPage () {
                   </React.Fragment>)}
                 <div ref={nextPageMarker} />
 
-              </div>
+                </div>
               : <></>
           }
         </div>
-        {isFetchingNextPage
+        {hasNextPage && isFetchingNextPage
           ? <p>Loading...</p>
           : <></>}
 

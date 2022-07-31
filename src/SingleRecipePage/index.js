@@ -1,17 +1,17 @@
 import WithSideBar from '../WithSideBar'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery, useMutation } from 'react-query'
 import { Loading } from '../Loading'
+import { ConfirmPopup } from '../ConfirmPopup'
 import * as api from '../api'
 import { ErrorDialog } from '../ErrorDialog'
 
 // TODO sure you want to delete?
-// TODO 400 on fetch recipe handle
 export default function SingleRecipePage () {
   const { slug } = useParams()
   const navigate = useNavigate()
-
+  const [showConfirm, setShowConfirm] = useState(false)
   const fetchRecipe = useQuery(['fetchRecipe', slug],
     () => api.fetchRecipe(slug))
 
@@ -26,6 +26,14 @@ export default function SingleRecipePage () {
   const isLoading = fetchRecipe.isLoading || deleteRecipe.isLoading
   return (
     <WithSideBar>
+      <ConfirmPopup
+        onNo={() => setShowConfirm(false)}
+        onYes={() => {
+          deleteRecipe.mutate(slug)
+          setShowConfirm(false)
+        }}
+        show={showConfirm}
+      />
       <Loading show={isLoading}>
         {
       fetchRecipe.data
@@ -53,7 +61,7 @@ export default function SingleRecipePage () {
               /
               <span
                 className='px-2 cursor-pointer hover:underline decoration-dashed' onClick={() => {
-                  deleteRecipe.mutate(slug)
+                  setShowConfirm(true)
                 }}
               >
                 Delete
