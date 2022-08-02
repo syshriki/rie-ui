@@ -22,6 +22,7 @@ export default function SingleRecipePage () {
       }
     })
 
+  const isAuthor = fetchRecipe.data && window.localStorage.getItem('username') === fetchRecipe.data.recipe.author
   const error = fetchRecipe.error ? <ErrorDialog message='Something went wrong :/' /> : <> </>
   const isLoading = fetchRecipe.isLoading || deleteRecipe.isLoading
   return (
@@ -54,21 +55,23 @@ export default function SingleRecipePage () {
                 Last edited by {fetchRecipe.data.recipe.author} on {new Date(fetchRecipe.data.recipe.createdAt * 1000).toLocaleString()}
               </div>
             </div>
-            <div className='flex p-4 justify-center'>
-              <span className='px-2 cursor-pointer hover:underline decoration-dashed'>
-                <Link to={`/edit/${slug}`}> Edit </Link>
-              </span>
-              /
-              <span
-                className='px-2 cursor-pointer hover:underline decoration-dashed' onClick={() => {
-                  setShowConfirm(true)
-                }}
-              >
-                Delete
-              </span>
-            </div>
+            {isAuthor
+              ? <div className='flex p-4 justify-center'>
+                <span className='px-2 cursor-pointer hover:underline decoration-dashed'>
+                  <Link to={`/edit/${slug}`}> Edit </Link>
+                </span>
+                /
+                <span
+                  className='px-2 cursor-pointer hover:underline decoration-dashed' onClick={() => {
+                    setShowConfirm(true)
+                  }}
+                >
+                  Delete
+                </span>
+              </div>
+              : <></>}
           </div>
-          </div>
+        </div>
         : error
       }
       </Loading>
