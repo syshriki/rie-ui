@@ -6,6 +6,7 @@ import { Loading } from '../Loading'
 import { ConfirmPopup } from '../ConfirmPopup'
 import * as api from '../api'
 import { ErrorDialog } from '../ErrorDialog'
+import { RecipeTitle } from '../RecipeTitle'
 
 // TODO sure you want to delete?
 export default function SingleRecipePage () {
@@ -22,8 +23,15 @@ export default function SingleRecipePage () {
       }
     })
 
+  const toggleFavorite = useMutation(
+    () => api.toggleFavorite(slug), {
+      onSuccess: () => {
+        fetchRecipe.refetch()
+      }
+    })
+
   const isAuthor = fetchRecipe.data && window.localStorage.getItem('username') === fetchRecipe.data.recipe.author
-  const error = fetchRecipe.error ? <ErrorDialog message='Something went wrong :/' /> : <> </>
+  const error = fetchRecipe.error || toggleFavorite.error ? <ErrorDialog message='Something went wrong :/' /> : <> </>
   const isLoading = fetchRecipe.isLoading || deleteRecipe.isLoading
   return (
     <WithSideBar>
@@ -41,8 +49,13 @@ export default function SingleRecipePage () {
         ? <div className='overflow-auto'>
           <div className='flex flex-col divide-y divide-slate-200 px-8 py-4 h-18'>
             <div className='grid grid-cols-1 pb-4 text-2xl font-bold'>
-              <div className='grid-cols-1 place-self-center self-center'>
-                <p>{fetchRecipe.data.recipe.name}</p>
+              <div className='flex place-self-center'>
+                <RecipeTitle
+                  name={fetchRecipe.data.recipe.name}
+                  isFavorite={fetchRecipe.data.recipe.isFavorite}
+                  onFavoriteClick={() => toggleFavorite.mutate(slug)}
+                  onlyFavroite
+                />
               </div>
             </div>
             <div className='flex py-8 whitespace-pre-wrap'>

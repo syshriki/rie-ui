@@ -21,7 +21,7 @@ export async function fetchRecipe (recipeSlug) {
 }
 
 export async function createRecipe (recipe) {
-  const { text, body } = await request.post(`${baseUrl}/recipes`)
+  const { text } = await request.post(`${baseUrl}/recipes`)
     .send(recipe)
     .set('Authorization', window.localStorage.getItem('username'))
 
@@ -38,6 +38,13 @@ export async function updateRecipe (recipe) {
 
 export async function deleteRecipe (recipeSlug) {
   const { body } = await request.delete(`${baseUrl}/recipes/${recipeSlug}`)
+    .set('Authorization', window.localStorage.getItem('username'))
+
+  return body
+}
+
+export async function toggleFavorite (recipeSlug) {
+  const { body } = await request.post(`${baseUrl}/recipes/${recipeSlug}/favorite`)
     .set('Authorization', window.localStorage.getItem('username'))
 
   return body

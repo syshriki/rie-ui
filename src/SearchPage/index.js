@@ -8,8 +8,6 @@ import * as api from '../api'
 import { useInfiniteQuery } from 'react-query'
 import { Loading } from '../Loading'
 
-// TODO loading animatin for infite scroll
-
 function NoData () {
   return (
     <div className='flex-col grow'>
@@ -45,19 +43,22 @@ export default function SearchPage () {
   const observer = useRef(null)
   const scrollRestorePoint = useRef(null)
 
+  console.log(['fetchRecipes', searchParams.get('q'), searchParams.get('cursor')])
   const {
     fetchNextPage,
     isFetchingNextPage,
     data,
     isLoading,
     hasNextPage,
-    error
+    error,
+    refetch
   } = useInfiniteQuery(['fetchRecipes', searchParams.get('q'), searchParams.get('cursor')],
     ({ pageParam }) => api.findRecipes(searchParams.get('q'), pageParam || searchParams.get('cursor')),
     {
       getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
       refetchOnWindowFocus: false,
-      enabled: false
+      enabled: false,
+      refetchOnMount: false
     })
 
   const scrollNext = useCallback((entries) => {
@@ -83,7 +84,11 @@ export default function SearchPage () {
     setSearchParams(searchParams)
     if (searchParams.get('q')) {
       setSearchText(searchParams.get('q'))
-      fetchNextPage()
+      if (data) {
+        refetch()
+      } else {
+        fetchNextPage()
+      }
     }
   }, [searchParams.get('q')])
 
@@ -170,7 +175,7 @@ export default function SearchPage () {
                   </React.Fragment>)}
                 <div ref={nextPageMarker} />
 
-                </div>
+              </div>
               : <></>
           }
         </div>
