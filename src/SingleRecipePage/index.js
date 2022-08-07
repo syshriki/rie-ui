@@ -13,13 +13,14 @@ export default function SingleRecipePage () {
   const { slug } = useParams()
   const navigate = useNavigate()
   const [showConfirm, setShowConfirm] = useState(false)
-  const [isTogglingFavorite, setIsTogglingFavorite] = useState(false)
+  const [isTogglingFavorite, setIsTogglingFavorite] = useState(true)
   const [isFavorite, setIsFavorite] = useState(false)
 
   const fetchRecipe = useQuery(['fetchRecipe', slug],
     () => api.fetchRecipe(slug), {
       onSuccess: ({ recipe }) => {
         setIsFavorite(recipe.isFavorite)
+        setIsTogglingFavorite(false)
       }
     }, {
       refetchOnWindowFocus: false

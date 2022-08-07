@@ -8,16 +8,6 @@ import * as api from '../api'
 import { useInfiniteQuery } from 'react-query'
 import { Loading } from '../Loading'
 
-function NoData () {
-  return (
-    <div className='flex-col grow'>
-      <div className='flex items-center justify-center h-full'>
-        <MdDinnerDining size='15em' />
-      </div>
-    </div>
-  )
-}
-
 function NoResults ({ query }) {
   return (
     <div className='flex-col grow'>
@@ -43,7 +33,6 @@ export default function SearchPage () {
   const observer = useRef(null)
   const scrollRestorePoint = useRef(null)
 
-  console.log(['fetchRecipes', searchParams.get('q'), searchParams.get('cursor')])
   const {
     fetchNextPage,
     isFetchingNextPage,
@@ -53,10 +42,9 @@ export default function SearchPage () {
     error,
     refetch
   } = useInfiniteQuery(['fetchRecipes', searchParams.get('q'), searchParams.get('cursor')],
-    ({ pageParam }) => api.findRecipes(searchParams.get('q'), pageParam || searchParams.get('cursor')),
+    ({ pageParam }) => api.findRecipes(searchParams.get('q') || '', pageParam || searchParams.get('cursor')),
     {
       getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
-      refetchOnWindowFocus: false,
       enabled: false,
       refetchOnMount: false
     })
@@ -80,15 +68,15 @@ export default function SearchPage () {
   // init search parameters and set search text
   useEffect(() => {
     const cursor = searchParams.get('cursor') ?? Math.floor(Date.now() / 1000).toString()
+    const query = searchParams.get('q') ?? ''
     searchParams.set('cursor', cursor)
+    searchParams.set('q', query)
     setSearchParams(searchParams)
-    if (searchParams.get('q')) {
-      setSearchText(searchParams.get('q'))
-      if (data) {
-        refetch()
-      } else {
-        fetchNextPage()
-      }
+    setSearchText(query)
+    if (!data) {
+      fetchNextPage()
+    } else {
+      refetch()
     }
   }, [searchParams.get('q')])
 
@@ -175,16 +163,12 @@ export default function SearchPage () {
                   </React.Fragment>)}
                 <div ref={nextPageMarker} />
 
-              </div>
+                </div>
               : <></>
           }
         </div>
         {hasNextPage && isFetchingNextPage
           ? <p>Loading...</p>
-          : <></>}
-
-        {!data
-          ? <NoData />
           : <></>}
 
         {data && !data.pages.at(0).recipes.length
