@@ -44,10 +44,10 @@ export async function deleteRecipe (recipeSlug) {
 }
 
 export async function toggleFavorite (recipeSlug) {
-  const { body } = await request.post(`${baseUrl}/recipes/${recipeSlug}/favorite`)
+  const { text } = await request.post(`${baseUrl}/recipes/${recipeSlug}/favorite`)
     .set('Authorization', window.localStorage.getItem('username'))
 
-  return body
+  return text
 }
 
 export async function fetchNews (cursor) {

@@ -1,9 +1,21 @@
 import PropTypes from 'prop-types'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 
+const noop = function () {}
 export function RecipeTitle (props) {
   const classNames = props.onFavoriteClick ? 'cursor-pointer' : ''
-  const notFavorite = props.onlyFavroite ? <AiOutlineHeart className={classNames} /> : <></>
+  const notFavorite = props.onlyFavorite
+    ? <AiOutlineHeart className={classNames} />
+    : <></>
+  const notLoadingFavorite = props.isFavorite
+    ? <AiFillHeart className={classNames} />
+    : notFavorite
+  const loadingFavorite = props.isLoading
+    ? <AiFillHeart fill='gray' />
+    : <></>
+
+  const onClick = props.onFavoriteClick || noop
+
   return (
     <div className='flex self-center'>
       <div className='pr-1'>
@@ -11,19 +23,18 @@ export function RecipeTitle (props) {
       </div>
       <div
         className='self-center'
-        onClick={() => props.onFavoriteClick?.()}
+        onClick={() => props.isLoading ? noop() : onClick()}
       >
-        {props.isFavorite
-          ? <AiFillHeart className={classNames} />
-          : notFavorite}
+        {props.isLoading ? loadingFavorite : notLoadingFavorite}
       </div>
     </div>
   )
 }
 
 RecipeTitle.propTypes = {
+  isLoading: PropTypes.bool,
   isFavorite: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   onFavoriteClick: PropTypes.func,
-  onlyFavroite: PropTypes.bool
+  onlyFavorite: PropTypes.bool
 }

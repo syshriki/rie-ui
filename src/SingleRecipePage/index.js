@@ -13,8 +13,17 @@ export default function SingleRecipePage () {
   const { slug } = useParams()
   const navigate = useNavigate()
   const [showConfirm, setShowConfirm] = useState(false)
+  const [isTogglingFavorite, setIsTogglingFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
+
   const fetchRecipe = useQuery(['fetchRecipe', slug],
-    () => api.fetchRecipe(slug))
+    () => api.fetchRecipe(slug), {
+      onSuccess: ({ recipe }) => {
+        setIsFavorite(recipe.isFavorite)
+      }
+    }, {
+      refetchOnWindowFocus: false
+    })
 
   const deleteRecipe = useMutation(
     () => api.deleteRecipe(slug), {
@@ -25,8 +34,9 @@ export default function SingleRecipePage () {
 
   const toggleFavorite = useMutation(
     () => api.toggleFavorite(slug), {
-      onSuccess: () => {
-        fetchRecipe.refetch()
+      onSuccess: (isFavorite) => {
+        setIsTogglingFavorite(false)
+        setIsFavorite(isFavorite === 'true')
       }
     })
 
@@ -52,9 +62,13 @@ export default function SingleRecipePage () {
               <div className='flex place-self-center'>
                 <RecipeTitle
                   name={fetchRecipe.data.recipe.name}
-                  isFavorite={fetchRecipe.data.recipe.isFavorite}
-                  onFavoriteClick={() => toggleFavorite.mutate(slug)}
-                  onlyFavroite
+                  isLoading={isTogglingFavorite}
+                  isFavorite={isFavorite}
+                  onFavoriteClick={() => {
+                    toggleFavorite.mutate(slug)
+                    setIsTogglingFavorite(true)
+                  }}
+                  onlyFavorite
                 />
               </div>
             </div>
@@ -81,10 +95,10 @@ export default function SingleRecipePage () {
                 >
                   Delete
                 </span>
-              </div>
+                </div>
               : <></>}
           </div>
-        </div>
+          </div>
         : error
       }
       </Loading>
