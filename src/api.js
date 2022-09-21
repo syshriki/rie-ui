@@ -2,6 +2,38 @@ import request from 'superagent'
 
 const baseUrl = process.env.API_URL
 
+export async function findUsersFavorites (username, query, cursor) {
+  const { body } = await request.get(`${baseUrl}/user/${username}/favorites`)
+    .query({
+      q: query,
+      cursor
+    })
+    .set('Authorization', window.localStorage.getItem('username'))
+
+  return body
+}
+
+export async function findUsersRecipes (username, query, cursor) {
+  const { body } = await request.get(`${baseUrl}/user/${username}/recipes`)
+    .query({
+      q: query,
+      cursor
+    })
+    .set('Authorization', window.localStorage.getItem('username'))
+
+  return body
+}
+
+export async function getProfile (username, query, cursor) {
+  const { body } = await request.get(`${baseUrl}/user/${username}/profile`)
+    .set('Authorization', window.localStorage.getItem('username'))
+    .query({
+      q: query,
+      cursor
+    })
+  return body
+}
+
 export async function findRecipes (query, cursor) {
   const { body } = await request.get(`${baseUrl}/recipes`)
     .query({

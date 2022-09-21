@@ -72,7 +72,7 @@ export default function () {
   return (
     <WithSideBar selected='home'>
       <Loading show={isLoading}>
-        <div className='overflow-auto'>
+        <div className='overflow-auto h-full'>
           <div className='py-4 text-center h-18'>
             <p className='text-2xl font-bold'>News</p>
           </div>
@@ -92,7 +92,7 @@ export default function () {
                                       />)}
                 </React.Fragment>)
               : <>
-              </>}
+                </>}
           </div>
           {data ? <div ref={nextPageMarker} /> : <></>}
         </div>

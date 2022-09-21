@@ -1,12 +1,12 @@
 import WithSideBar from '../WithSideBar'
 import { MdSearch, MdDinnerDining } from 'react-icons/md'
-import { RecipeItem } from './RecipeItem'
 import { ErrorDialog } from '../ErrorDialog'
 import { useSearchParams } from 'react-router-dom'
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as api from '../api'
 import { useInfiniteQuery } from 'react-query'
 import { Loading } from '../Loading'
+import { RecipeList } from '../RecipeList'
 
 function NoResults ({ query }) {
   return (
@@ -28,10 +28,7 @@ function GenericError () {
 
 export default function SearchPage () {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [inputSearchText, setSearchText] = useState('')
-  const nextPageMarker = useRef(null)
-  const observer = useRef(null)
-  const scrollRestorePoint = useRef(null)
+  const [searchText, setSearchText] = useState('')
 
   const {
     fetchNextPage,
@@ -49,68 +46,35 @@ export default function SearchPage () {
       refetchOnMount: false
     })
 
-  const scrollNext = useCallback((entries) => {
-    const target = entries[0]
-    if (target.isIntersecting && hasNextPage && !isLoading) {
-      fetchNextPage()
-    }
-  }, [hasNextPage])
-
-  // init scroll restoration point
-  useEffect(() => {
-    if (scrollRestorePoint.current) {
-      scrollRestorePoint.current.scrollIntoView()
-      window.sessionStorage.removeItem('searchPageScrollRestore')
-      scrollRestorePoint.current = null
-    }
-  }, [])
-
   // init search parameters and set search text
   useEffect(() => {
     const cursor = searchParams.get('cursor') ?? Math.floor(Date.now() / 1000).toString()
     const query = searchParams.get('q') ?? ''
     searchParams.set('cursor', cursor)
     searchParams.set('q', query)
-    setSearchParams(searchParams)
+    setSearchParams(searchParams, { replace: true })
     setSearchText(query)
-    if (!data) {
+    if (!hasNextPage) {
       fetchNextPage()
     } else {
       refetch()
     }
   }, [searchParams.get('q')])
 
-  // init infinite scroll
-  useEffect(() => {
-    if (observer.current) {
-      observer.current.disconnect()
-    }
-    observer.current = new window.IntersectionObserver((e) => {
-      scrollNext(e)
-    }, {
-      root: null,
-      rootMargin: '20px',
-      threshold: 0
-    })
-    if (nextPageMarker.current) {
-      observer.current.observe(nextPageMarker.current)
-    }
-  }, [scrollNext])
-
   const onSubmit = (ev) => {
-    searchParams.set('q', inputSearchText)
+    searchParams.set('q', searchText)
     setSearchParams(searchParams)
   }
 
   return (
     <WithSideBar selected='search'>
       <Loading show={isLoading}>
-        <div className='overflow-auto'>
+        <div className='overflow-auto h-full'>
           <div className='py-4 text-center h-18'>
             <div className='w-full h-12'>
               <input
                 type='text'
-                value={inputSearchText}
+                value={searchText}
                 onKeyPress={(ev) => {
                   if (ev.key === 'Enter') {
                     searchParams.set('q', ev.target.value)
@@ -144,36 +108,22 @@ export default function SearchPage () {
               : <></>
             }
           </div>
-          {
-            data
-              ? <div className='flex flex-col pb-9 space-y-12 divide-y divide-slate-200'>
-                {data.pages.map(page =>
-                  <React.Fragment
-                    key={page.nextCursor}
-                  >
-                    {page.recipes.map(r =>
-                      <RecipeItem
-                        {...r}
-                        key={r.id}
-                        ref={r.id === window.sessionStorage.getItem('searchPageScrollRestore') ? scrollRestorePoint : null}
-                        onRecipeClick={(ev) => {
-                          window.sessionStorage.setItem('searchPageScrollRestore', r.id)
-                        }}
-                      />)}
-                  </React.Fragment>)}
-                <div ref={nextPageMarker} />
+          <RecipeList
+            data={data}
+            hasNextPage={hasNextPage}
+            isLoading={isLoading}
+            fetchNextPage={fetchNextPage}
+            sessionStorageName='searchPage'
+          />
+          {hasNextPage && isFetchingNextPage
+            ? <p>Loading...</p>
+            : <></>}
 
-                </div>
-              : <></>
-          }
+          {data && !data.pages.at(0).recipes.length
+            ? <NoResults query={searchParams.get('q')} />
+            : <></>}
         </div>
-        {hasNextPage && isFetchingNextPage
-          ? <p>Loading...</p>
-          : <></>}
 
-        {data && !data.pages.at(0).recipes.length
-          ? <NoResults query={searchParams.get('q')} />
-          : <></>}
       </Loading>
     </WithSideBar>
   )

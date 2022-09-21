@@ -7,8 +7,8 @@ import { ConfirmPopup } from '../ConfirmPopup'
 import * as api from '../api'
 import { ErrorDialog } from '../ErrorDialog'
 import { RecipeTitle } from '../RecipeTitle'
+import { UserLink } from '../UserLink'
 
-// TODO sure you want to delete?
 export default function SingleRecipePage () {
   const { slug } = useParams()
   const navigate = useNavigate()
@@ -80,7 +80,7 @@ export default function SingleRecipePage () {
           <div className='flex flex-col divide-y divide-slate-200 py-4 h-18'>
             <div className='flex flex-row w-full pb-4'>
               <div className='flex grow justify-center italic'>
-                Last edited by {fetchRecipe.data.recipe.author} on {new Date(fetchRecipe.data.recipe.createdAt * 1000).toLocaleString()}
+                Last edited by&nbsp;<UserLink username={fetchRecipe.data.recipe.author} />&nbsp;on {new Date(fetchRecipe.data.recipe.createdAt * 1000).toLocaleString()}
               </div>
             </div>
             {isAuthor
@@ -96,10 +96,10 @@ export default function SingleRecipePage () {
                 >
                   Delete
                 </span>
-                </div>
+              </div>
               : <></>}
           </div>
-          </div>
+        </div>
         : error
       }
       </Loading>

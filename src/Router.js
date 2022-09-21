@@ -7,6 +7,7 @@ import {
 import HomePage from './HomePage'
 import SearchPage from './SearchPage'
 import CreateRecipePage from './CreateRecipePage'
+import ProfilePage from './ProfilePage'
 import EditRecipePage from './EditRecipePage'
 import LoginPage from './LoginPage'
 import Logout from './Logout'
@@ -28,6 +29,7 @@ export default function () {
         <Route path='/huh' element={requireAuth(<ErrorPage />)} />
         <Route path='/recipe/:slug' element={requireAuth(<SingleRecipePage />)} />
         <Route path='/create' element={requireAuth(<CreateRecipePage />)} />
+        <Route path='/profile/:username' element={requireAuth(<ProfilePage />)} />
         <Route path='/edit/:slug' element={requireAuth(<EditRecipePage />)} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/logout' element={<Logout />} />

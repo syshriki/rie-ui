@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { MdAdd, MdSearch, MdHome, MdMeetingRoom } from 'react-icons/md'
+import { MdAdd, MdSearch, MdHome, MdMeetingRoom, MdPerson } from 'react-icons/md'
 import PropTypes from 'prop-types'
 
 function DynamicBackground (props) {
@@ -31,6 +31,11 @@ export default function WithSideBar (props) {
           <Link to='/search'>
             <DynamicBackground selected={props.selected} link='search'>
               <MdSearch />
+            </DynamicBackground>
+          </Link>
+          <Link to={`/profile/${window.localStorage.getItem('username')}`}>
+            <DynamicBackground selected={props.selected} link='profile'>
+              <MdPerson />
             </DynamicBackground>
           </Link>
           <Link to='/create'>
