@@ -1,5 +1,5 @@
 import WithSideBar from '../WithSideBar'
-import { MdSearch, MdDinnerDining } from 'react-icons/md'
+import { MdSearch } from 'react-icons/md'
 import { ErrorDialog } from '../ErrorDialog'
 import { useSearchParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
@@ -38,7 +38,7 @@ export default function SearchPage () {
     hasNextPage,
     error,
     refetch
-  } = useInfiniteQuery(['fetchRecipes', searchParams.get('q'), searchParams.get('cursor')],
+  } = useInfiniteQuery(['fetchRecipes', searchParams.get('q') || '', searchParams.get('cursor')],
     ({ pageParam }) => api.findRecipes(searchParams.get('q') || '', pageParam || searchParams.get('cursor')),
     {
       getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
@@ -54,7 +54,7 @@ export default function SearchPage () {
     searchParams.set('q', query)
     setSearchParams(searchParams, { replace: true })
     setSearchText(query)
-    if (!hasNextPage) {
+    if (hasNextPage) {
       fetchNextPage()
     } else {
       refetch()
