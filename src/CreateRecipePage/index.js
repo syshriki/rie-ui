@@ -27,12 +27,11 @@ export default function CreateRecipePage () {
   })
 
   function onSubmit () {
-    const anyMissing = [name, recipe, description].some(s => !s)
+    const anyMissing = [name, recipe].some(s => !s)
     if (anyMissing) {
       setMissing({
         name: !name,
-        recipe: !recipe,
-        description: !description
+        recipe: !recipe
       })
     } else {
       mutate({
@@ -86,17 +85,13 @@ export default function CreateRecipePage () {
               py-1.5
               border
               transition
-              ${missing.description ? formErrorClasses : formOkClasses}
+              formOkClasses
               ease-in-out
               w-1/2
               focus:outline-none`}
               value={description}
               onChange={(ev) => {
                 setDescription(ev.target.value)
-                setMissing({
-                  ...missing,
-                  description: !ev.target.value
-                })
               }}
             />
           </div>

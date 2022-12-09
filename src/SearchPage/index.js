@@ -2,12 +2,12 @@ import WithSideBar from '../WithSideBar'
 import { MdSearch } from 'react-icons/md'
 import { ErrorDialog } from '../ErrorDialog'
 import { useSearchParams } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import * as api from '../api'
 import { useInfiniteQuery } from 'react-query'
 import { Loading } from '../Loading'
 import { RecipeList } from '../RecipeList'
-
+import { debounce, throttle } from 'lodash'
 function NoResults ({ query }) {
   return (
     <div className='flex-col grow'>
@@ -28,7 +28,8 @@ function GenericError () {
 
 export default function SearchPage () {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [searchText, setSearchText] = useState('')
+  const [searchText, setSearchText] = useState(searchParams.get('q') ?? '')
+  const [typeText, setTypeText] = useState(searchParams.get('q') ?? '')
 
   const {
     fetchNextPage,
@@ -38,52 +39,63 @@ export default function SearchPage () {
     hasNextPage,
     error,
     refetch
-  } = useInfiniteQuery(['fetchRecipes', searchParams.get('q') || '', searchParams.get('cursor')],
-    ({ pageParam }) => api.findRecipes(searchParams.get('q') || '', pageParam || searchParams.get('cursor')),
+  } = useInfiniteQuery(['fetchRecipes', searchText],
+    ({ pageParam }) => api.findRecipes(searchText, pageParam || Math.floor(Date.now() / 1000)),
     {
       getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
       enabled: false,
       refetchOnMount: false
     })
 
-  // init search parameters and set search text
+  // auto search when there are more than 3 characters
   useEffect(() => {
-    const cursor = searchParams.get('cursor') ?? Math.floor(Date.now() / 1000).toString()
-    const query = searchParams.get('q') ?? ''
-    searchParams.set('cursor', cursor)
-    searchParams.set('q', query)
-    setSearchParams(searchParams, { replace: true })
-    setSearchText(query)
+    searchDebounced()
+  }, [Math.max(2, typeText.length)])
+
+  function search () {
     if (hasNextPage) {
       fetchNextPage()
     } else {
       refetch()
     }
-  }, [searchParams.get('q')])
+  }
+  const searchDebounced = useMemo(() => debounce(search, 500), [])
 
-  const onSubmit = (ev) => {
+  function onSubmit (ev) {
     searchParams.set('q', searchText)
     setSearchParams(searchParams)
+    setSearchText(ev.target.value)
+    searchDebounced()
+  }
+
+  function keyPressHandle (ev) {
+    if (ev.key === 'Enter') {
+      searchParams.set('q', ev.target.value)
+      setSearchParams(searchParams)
+      setSearchText(ev.target.value)
+    }
+  }
+
+  function onChangeHandle (ev) {
+    const shouldAutoSearch = ev.target.value.length > 2
+    setTypeText(ev.target.value)
+    if (shouldAutoSearch) {
+      setSearchText(ev.target.value)
+    }
   }
 
   return (
     <WithSideBar selected='search'>
-      <Loading show={isLoading}>
+      <Loading show={false}>
         <div className='overflow-auto h-full'>
           <div className='py-4 text-center h-18'>
             <div className='w-full h-12'>
               <input
                 type='text'
-                value={searchText}
-                onKeyPress={(ev) => {
-                  if (ev.key === 'Enter') {
-                    searchParams.set('q', ev.target.value)
-                    setSearchParams(searchParams)
-                  }
-                }}
-                onChange={(ev) => {
-                  setSearchText(ev.target.value)
-                }}
+                autoFocus
+                value={typeText}
+                onKeyPress={keyPressHandle}
+                onChange={onChangeHandle}
                 className='
           px-3
           py-1.5
@@ -120,7 +132,7 @@ export default function SearchPage () {
             : <></>}
 
           {data && !data.pages.at(0).recipes.length
-            ? <NoResults query={searchParams.get('q')} />
+            ? <NoResults query={searchText} />
             : <></>}
         </div>
 
