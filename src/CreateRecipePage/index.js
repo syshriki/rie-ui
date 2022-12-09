@@ -1,6 +1,5 @@
-import WithSideBar from '../WithSideBar'
+import Page from '../Page'
 import { useState } from 'react'
-import { Loading } from '../Loading'
 import { ErrorDialog } from '../ErrorDialog'
 import { useMutation } from 'react-query'
 import * as api from '../api'
@@ -49,16 +48,12 @@ export default function CreateRecipePage () {
     </div>
   )
   return (
-    <WithSideBar selected='create'>
-      <Loading show={isLoading}>
-        {error ? errorElement : <></>}
-        <div className='flex-row h-full space-y-4 overflow-auto'>
-          <div className='pt-4 pb-6 text-center h-18'>
-            <p className='text-2xl font-bold'>New Recipe</p>
-          </div>
-          <div className='text-center'>
-            <input
-              type='text' className={`
+    <Page selected='create' isLoading={isLoading} header='New Recipe'>
+      {error ? errorElement : <></>}
+      <div className='flex-row h-full space-y-4 overflow-auto'>
+        <div className='text-center'>
+          <input
+            type='text' className={`
           px-3
           py-1.5
           border
@@ -68,21 +63,21 @@ export default function CreateRecipePage () {
           h-full
           w-1/2
           focus:outline-none`}
-              placeholder='Name'
-              value={name}
-              onChange={(ev) => {
-                setName(ev.target.value)
-                setMissing({
-                  ...missing,
-                  name: !ev.target.value
-                })
-              }}
-            />
-          </div>
-          <div className='text-center'>
-            <textarea
-              placeholder='Short recipe description (optional)'
-              className={`px-3
+            placeholder='Name'
+            value={name}
+            onChange={(ev) => {
+              setName(ev.target.value)
+              setMissing({
+                ...missing,
+                name: !ev.target.value
+              })
+            }}
+          />
+        </div>
+        <div className='text-center'>
+          <textarea
+            placeholder='Short recipe description (optional)'
+            className={`px-3
               py-1.5
               border
               transition
@@ -90,20 +85,20 @@ export default function CreateRecipePage () {
               ease-in-out
               w-1/2
               focus:outline-none`}
-              value={description}
-              onChange={(ev) => {
-                setDescription(ev.target.value)
-                setMissing({
-                  ...missing,
-                  description: !ev.target.value
-                })
-              }}
-            />
-          </div>
-          <div className='text-center h-3/4'>
-            <textarea
-              placeholder='Recipe...'
-              className={`px-3
+            value={description}
+            onChange={(ev) => {
+              setDescription(ev.target.value)
+              setMissing({
+                ...missing,
+                description: !ev.target.value
+              })
+            }}
+          />
+        </div>
+        <div className='text-center h-3/4'>
+          <textarea
+            placeholder='Recipe...'
+            className={`px-3
               py-1.5
               border
               transition
@@ -112,25 +107,24 @@ export default function CreateRecipePage () {
               h-full
               w-1/2
               focus:outline-none`}
-              value={recipe}
-              onChange={(ev) => {
-                setMissing({
-                  ...missing,
-                  recipe: !ev.target.value
-                })
-                setRecipe(ev.target.value)
-              }}
-            />
-          </div>
-          <div className='text-center'>
-            <button
-              onClick={onSubmit} className='px-3
-          py-1.5 border transition h-full align-bottom  active:bg-gray-100'
-            >Create
-            </button>
-          </div>
+            value={recipe}
+            onChange={(ev) => {
+              setMissing({
+                ...missing,
+                recipe: !ev.target.value
+              })
+              setRecipe(ev.target.value)
+            }}
+          />
         </div>
-      </Loading>
-    </WithSideBar>
+        <div className='text-center'>
+          <button
+            onClick={onSubmit} className='px-3
+          py-1.5 border transition h-full align-bottom  active:bg-gray-100'
+          >Create
+          </button>
+        </div>
+      </div>
+    </Page>
   )
 }

@@ -45,22 +45,25 @@ export const RecipeList = (props) => {
   return props.data
     ? <div className={props.noSeperator ? withoutSeperator : withSeperator}>
       {
-            props.data.pages.map(page =>
-              <React.Fragment
-                key={page.nextCursor}
-              >
-                {page.recipes.map(r =>
-                  <RecipeItem
-                    {...r}
-                    key={r.id}
-                    ref={r.id === window.sessionStorage.getItem(props.sessionStorageName) ? scrollRestorePoint : null}
-                    onRecipeClick={(ev) => {
-                      if (props.sessionStorageName) {
-                        window.sessionStorage.setItem(props.sessionStorageName, r.id)
-                      }
-                    }}
-                  />)}
-              </React.Fragment>)
+            props.data.pages.map(page => {
+              return (
+                <React.Fragment
+                  key={page.nextCursor}
+                >
+                  {page.recipes.map(r =>
+                    <RecipeItem
+                      {...r}
+                      key={r.id}
+                      ref={r.id === window.sessionStorage.getItem(props.sessionStorageName) ? scrollRestorePoint : null}
+                      onRecipeClick={(ev) => {
+                        if (props.sessionStorageName) {
+                          window.sessionStorage.setItem(props.sessionStorageName, r.id)
+                        }
+                      }}
+                    />)}
+                </React.Fragment>
+              )
+            })
         }
       <div ref={nextPageMarker} />
 

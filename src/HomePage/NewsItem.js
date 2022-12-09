@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import RieLink from '../RieLink'
 import React from 'react'
 import { UserLink } from '../UserLink'
 
@@ -13,12 +13,11 @@ export const NewsItem = React.forwardRef((props, ref) => {
       <div className='flex w-40 justify-center p-4'> {formatDate(props.createdAt)} </div>
       <div className='flex flex-col justify-between p-4'>
         <div className='mb-6'>
-          <Link
+          <RieLink
             to={`${props.type}/${props.recipeSlug}`}
-            className='font-bold text-xl cursor-pointer hover:underline decoration-dashed'
           >
             <p>{props.text}</p>
-          </Link>
+          </RieLink>
           <p>added by <UserLink username={props.author} /> </p>
         </div>
       </div>

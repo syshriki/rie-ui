@@ -1,8 +1,7 @@
-import WithSideBar from '../WithSideBar'
+import Page from '../Page'
 import { useInfiniteQuery } from 'react-query'
 import { useSearchParams } from 'react-router-dom'
 import * as api from '../api'
-import { Loading } from '../Loading'
 import React, { useEffect, useRef, useCallback } from 'react'
 import { NewsItem } from './NewsItem'
 
@@ -41,13 +40,6 @@ export default function () {
     }
   }, [])
 
-  // init search parameters and set search text
-  useEffect(() => {
-    const cursor = searchParams.get('cursor') ?? Math.floor(Date.now() / 1000).toString()
-    searchParams.set('cursor', cursor)
-    setSearchParams(searchParams)
-  }, [])
-
   // init infinite scroll
   useEffect(() => {
     if (observer.current) {
@@ -70,33 +62,26 @@ export default function () {
   }
 
   return (
-    <WithSideBar selected='home'>
-      <Loading show={isLoading}>
-        <div className='overflow-auto h-full'>
-          <div className='py-4 text-center h-18'>
-            <p className='text-2xl font-bold'>News</p>
-          </div>
-          <div className='flex flex-col pb-9 space-y-12 divide-y divide-slate-200'>
-            {data
-              ? data.pages.map(page =>
-                <React.Fragment
-                  key={page.nextCursor}
-                >
-                  {page.news.map(n => <NewsItem
-                    {...n}
-                    key={n.id}
-                    ref={n.id === window.sessionStorage.getItem('homePageScrollRestore') ? scrollRestorePoint : null}
-                    onNewsClick={(ev) => {
-                      window.sessionStorage.setItem('homePageScrollRestore', n.id)
-                    }}
-                                      />)}
-                </React.Fragment>)
-              : <>
-                </>}
-          </div>
-          {data ? <div ref={nextPageMarker} /> : <></>}
-        </div>
-      </Loading>
-    </WithSideBar>
+    <Page sideSelected='home' isLoading={isLoading} header='News'>
+      <div className='flex flex-col pb-9 space-y-12 divide-y divide-slate-200'>
+        {data
+          ? data.pages.map(page =>
+            <React.Fragment
+              key={page.nextCursor}
+            >
+              {page.news.map(n => <NewsItem
+                {...n}
+                key={n.id}
+                ref={n.id === window.sessionStorage.getItem('homePageScrollRestore') ? scrollRestorePoint : null}
+                onNewsClick={(ev) => {
+                  window.sessionStorage.setItem('homePageScrollRestore', n.id)
+                }}
+                                  />)}
+            </React.Fragment>)
+          : <>
+            </>}
+      </div>
+      {data ? <div ref={nextPageMarker} /> : <></>}
+    </Page>
   )
 }

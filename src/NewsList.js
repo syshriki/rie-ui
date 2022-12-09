@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import RieLink from './RieLink'
 
 function formatDate (epochSeconds) {
   return new Date(epochSeconds * 1000).toLocaleDateString()
@@ -11,12 +11,11 @@ function singleNewsItem (news) {
       <div className='flex w-40 justify-center p-4'> {formatDate(news.createdAt)} </div>
       <div className='flex flex-col justify-between p-4'>
         <div className='mb-6'>
-          <Link
+          <RieLink
             to={`${news.type}/${news.recipeSlug}`}
-            className='text-gray-900 font-bold text-xl cursor-pointer hover:underline decoration-dashed'
           >
             <div className='text-gray-900 font-bold text-xl'>{news.title}</div>
-          </Link>
+          </RieLink>
           <p className='text-gray-700 text-base'>{news.text} by {news.author}</p>
         </div>
       </div>

@@ -13,11 +13,7 @@ export function Loading (props) {
           </div>
         </div>
         {props.children}
-      </>
+        </>
       : props.children
   )
-}
-
-Loading.propTypes = {
-  show: PropTypes.bool.isRequired
 }

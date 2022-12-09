@@ -6,6 +6,8 @@ import {
 
 import HomePage from './HomePage'
 import SearchPage from './SearchPage'
+import MealPlanHomePage from './MealPlanHomePage'
+import MealPlanPage from './MealPlanPage'
 import CreateRecipePage from './CreateRecipePage'
 import ProfilePage from './ProfilePage'
 import EditRecipePage from './EditRecipePage'
@@ -26,6 +28,8 @@ export default function () {
       <Routes>
         <Route path='/' element={requireAuth(<HomePage />)} />
         <Route path='/search' element={requireAuth(<SearchPage />)} />
+        <Route path='/mealplan' element={requireAuth(<MealPlanHomePage />)} />
+        <Route path='/mealplan/:id' element={requireAuth(<MealPlanPage />)} />
         <Route path='/huh' element={requireAuth(<ErrorPage />)} />
         <Route path='/recipe/:slug' element={requireAuth(<SingleRecipePage />)} />
         <Route path='/create' element={requireAuth(<CreateRecipePage />)} />

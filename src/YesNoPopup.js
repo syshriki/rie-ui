@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 
-export function ConfirmPopup (props) {
+export function YesNoPopup (props) {
   return (
     props.show
       ? <div className='absolute overflow-hidden w-full h-screen bg-gray-500 bg-opacity-75 '>
         <div className='fixed w-full h-full z-50 flex flex-col items-center justify-center'>
           <div className='border-2 border-black p-6 shadow-lg max-w-sm mx-auto flex flex-col items-center space-y-4 bg-white'>
-            <div className='text-xl font-medium text-black'>Are you sure you want to delete this recipe?</div>
+            <div className='text-xl font-medium text-black'>{props.children}</div>
             <div className='grid grid-cols-6'>
               <div
                 className={`px-3 py-1.5 border transition h-full align-bottom 
@@ -29,7 +29,7 @@ export function ConfirmPopup (props) {
   )
 }
 
-ConfirmPopup.propTypes = {
+YesNoPopup.propTypes = {
   show: PropTypes.bool.isRequired,
   onYes: PropTypes.func.isRequired,
   onNo: PropTypes.func.isRequired

@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 import { useQuery, useMutation } from 'react-query'
 import { Loading } from '../Loading'
-import { ConfirmPopup } from '../ConfirmPopup'
+import { YesNoPopup } from '../YesNoPopup'
 import * as api from '../api'
 import { ErrorDialog } from '../ErrorDialog'
 import { RecipeTitle } from '../RecipeTitle'
@@ -12,7 +12,7 @@ import { UserLink } from '../UserLink'
 export default function SingleRecipePage () {
   const { slug } = useParams()
   const navigate = useNavigate()
-  const [showConfirm, setShowConfirm] = useState(false)
+  const [showYesNo, setShowYesNo] = useState(false)
   const [isTogglingFavorite, setIsTogglingFavorite] = useState(true)
   const [isFavorite, setIsFavorite] = useState(false)
 
@@ -46,14 +46,18 @@ export default function SingleRecipePage () {
   const isLoading = fetchRecipe.isLoading || deleteRecipe.isLoading
   return (
     <WithSideBar>
-      <ConfirmPopup
-        onNo={() => setShowConfirm(false)}
+      <YesNoPopup
+        onNo={() => setShowYesNo(false)}
         onYes={() => {
           deleteRecipe.mutate(slug)
-          setShowConfirm(false)
+          setShowYesNo(false)
         }}
-        show={showConfirm}
-      />
+        show={showYesNo}
+      >
+        <p>
+          Are you sure you want to delete this recipe?
+        </p>
+      </YesNoPopup>
       <Loading show={isLoading}>
         {
       fetchRecipe.data
@@ -96,10 +100,10 @@ export default function SingleRecipePage () {
                 >
                   Delete
                 </span>
-              </div>
+                </div>
               : <></>}
           </div>
-        </div>
+          </div>
         : error
       }
       </Loading>
