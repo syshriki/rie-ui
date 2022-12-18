@@ -39,7 +39,7 @@ export default function SingleRecipePage () {
   const { username } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
   const [searchText, setSearchText] = useState('')
-  const [cursor, setCursor] = useState(Date.now())
+  const [cursor, setCursor] = useState()
 
   const query = searchParams.get('q') ?? ''
   const selectedDataSet = searchParams.get('s') ?? 'Recipes'
