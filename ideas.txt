@@ -1,1 +1,43 @@
 - Recipe book, a user can havem ultiple recieps grouped together in a "book" e.g thanksgiving dinner, shabbat night, shabbat afternoon
+
+- Meal planner
+    - For planning one week or less at a time of meals
+        - Why 1 week? Vegis and meat usually spoil after that amount of time
+    - Optimize based on ingredient re-use for many meals
+    - Optimize for cost and nutrition?
+    - Left overs?
+    - Where do I put things like peanut butter and jelly sandwich
+    - What do people usually eat?
+
+    Where do I start?
+        - Design the UI
+    
+    Page(s?):
+        - Mealplans tab
+            - My plans (by name )
+        - View plan
+            - Meals by day of week
+            - Overall Shopping list/Price
+            - Nutritional information
+        - Single day of plan View
+        - Edit plan
+        - New plan
+        - Share plan?
+        - Plans shared with me
+
+
+    Automated meal planning system:
+    - Variety of ingredients
+    - Nutrition
+    - Seasonal ingredients should be favored
+    - Grocery store sales
+    - Ingredient Price
+    - Ease of Preperation
+    - Using what user already has
+
+
+Refactors:
+    - Move edit/remove recipe icon next to title
+    - Reipes should be public/private (for search and profile purposes)
+    - Recipes Icon (Recipe Management), will contain my recipes, create recipes, my favorited recipes, recipes shared 
+    - Mealplan Icon (Mealplan Management), contains  my mealplanes, create mealplan, mealplan shared with me

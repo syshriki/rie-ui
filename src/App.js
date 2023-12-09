@@ -1,6 +1,6 @@
 import Router from './Router'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import ErrorBoundary from './ErrorBoundry'
+import ErrorBoundary from './Components/ErrorBoundry'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 const queryClient = new QueryClient()
