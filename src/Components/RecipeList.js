@@ -40,8 +40,8 @@ export const RecipeList = (props) => {
     }
   }, [scrollNext])
 
-  const withSeperator = 'flex flex-col divide-y divide-slate-200 px-8'
-  const withoutSeperator = 'flex flex-col px-8'
+  const withSeperator = 'flex flex-col divide-y divide-slate-200 md:px-8 px-12'
+  const withoutSeperator = 'flex flex-col md:px-8 px-12'
   return props.data
     ? <div className={props.noSeperator ? withoutSeperator : withSeperator}>
       {

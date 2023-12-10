@@ -103,7 +103,8 @@ export default function SearchPage () {
           transition
           ease-in-out
           h-full
-          w-1/2
+          md:w-1/2
+          w-48
           focus:border-blue-300 focus:outline-none
         ' placeholder='Search'
               />

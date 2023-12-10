@@ -39,7 +39,7 @@ export default function WithSideBar (props) {
       <div className='md:static md:flex fixed'>
         <div className='md:hidden'>
           <div className='p-4 flex items-center'>
-            <div className='text-2xl font-bold'>
+            <div className='text-2xl font-bold bg-white'>
               <MdMenu size='1.5em' onClick={() => setShowMenu(!showMenu)} />
             </div>
           </div>

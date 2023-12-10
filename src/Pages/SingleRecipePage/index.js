@@ -58,22 +58,20 @@ export default function SingleRecipePage () {
         {
       fetchRecipe.data
         ? <div className='overflow-auto'>
-          <div className='flex flex-col divide-y divide-slate-200 px-8 py-4 h-18'>
-            <div className='grid grid-cols-1 pb-4 text-2xl font-bold'>
-              <div className='flex place-self-center'>
-                <RecipeTitle
-                  name={fetchRecipe.data.recipe.name}
-                  isLoading={isTogglingFavorite}
-                  isFavorite={isFavorite}
-                  onFavoriteClick={() => {
-                    toggleFavorite.mutate(slug)
-                    setIsTogglingFavorite(true)
-                  }}
-                  onlyFavorite
-                />
-              </div>
+          <div className='grid grid-cols-6 divide-y divide-slate-200 px-8 py-4 h-18'>
+            <div className='col-start-2 col-span-5 pb-4 text-2xl font-bold'>
+              <RecipeTitle
+                name={fetchRecipe.data.recipe.name}
+                isLoading={isTogglingFavorite}
+                isFavorite={isFavorite}
+                onFavoriteClick={() => {
+                  toggleFavorite.mutate(slug)
+                  setIsTogglingFavorite(true)
+                }}
+                onlyFavorite
+              />
             </div>
-            <div className='flex py-8 whitespace-pre-wrap'>
+            <div className='col-span-6 py-8 whitespace-pre-wrap'>
               {fetchRecipe.data.recipe.recipe}
             </div>
           </div>
@@ -96,10 +94,10 @@ export default function SingleRecipePage () {
                 >
                   Delete
                 </span>
-                </div>
+              </div>
               : <></>}
           </div>
-          </div>
+        </div>
         : error
       }
       </Loading>
